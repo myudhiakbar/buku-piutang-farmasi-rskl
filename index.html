@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Buku Utang Piutang Apotik RSUD Kebayoran Lama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #f0f9ff;
+        }
+        .form-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(14, 165, 233, 0.4);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 116, 139, 0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+        .dynamic-field {
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .unit-option {
+            transition: all 0.2s ease;
+        }
+        .unit-option:hover {
+            transform: translateY(-3px);
+        }
+        .selected-unit {
+            border-color: #3b82f6 !important;
+            background-color: #eff6ff !important;
+        }
+        input:focus, select:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-10 text-center">
+            <h1 class="text-3xl font-bold mb-3 text-sky-900">Aplikasi Buku Utang Piutang Apotik RSUD Kebayoran Lama</h1>
+            <p class="text-lg text-gray-600">Catat dan kelola transaksi peminjaman alkes dengan mudah dan efisien</p>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Form Input -->
+            <div class="lg:w-2/3">
+                <div class="form-container p-6 mb-8">
+                    <div class="header-gradient text-white rounded-t-xl p-4 -mx-6 -mt-6 mb-6">
+                        <h2 class="text-lg font-bold"><i class="fas fa-file-medical mr-2"></i>Form Peminjaman Alkes</h2>
+                    </div>
+
+                    <form id="loanForm">
+                        <!-- Tanggal Transaksi -->
+                        <div class="mb-6">
+                            <label for="transactionDate" class="block text-gray-700 font-medium mb-2">
+                                <i class="fas fa-calendar-day mr-2 text-blue-500"></i>Tanggal Transaksi
+                            </label>
+                            <div class="flex items-center">
+                                <input type="date" id="transactionDate" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <button type="button" id="resetDate" class="ml-3 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">Tanggal transaksi default adalah hari ini</p>
+                        </div>
+
+                        <!-- Nama Pasien -->
+                        <div class="mb-6">
+                            <label for="patientName" class="block text-gray-700 font-medium mb-2">
+                                <i class="fas fa-user-injured mr-2 text-blue-500"></i>Nama Pasien
+                            </label>
+                            <input type="text" id="patientName" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan nama pasien" required>
+                        </div>
+
+                        <!-- Unit -->
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-medium mb-3">
+                                <i class="fas fa-hospital mr-2 text-blue-500"></i>Unit
+                            </label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <div class="unit-option p-4 border-2 border-gray-200 rounded-lg text-center cursor-pointer transition" data-unit="Rawat Jalan">
+                                    <i class="fas fa-stethoscope text-xl mb-2 text-green-500"></i>
+                                    <p class="font-medium">Rawat Jalan</p>
+                                </div>
+                                <div class="unit-option p-4 border-2 border-gray-200 rounded-lg text-center cursor-pointer transition" data-unit="Rawat Inap">
+                                    <i class="fas fa-procedures text-xl mb-2 text-blue-500"></i>
+                                    <p class="font-medium">Rawat Inap</p>
+                                </div>
+                                <div class="unit-option p-4 border-2 border-gray-200 rounded-lg text-center cursor-pointer transition" data-unit="IGD">
+                                    <i class="fas fa-ambulance text-xl mb-2 text-red-500"></i>
+                                    <p class="font-medium">IGD</p>
+                                </div>
+                                <div class="unit-option p-4 border-2 border-gray-200 rounded-lg text-center cursor-pointer transition" data-unit="ICU">
+                                    <i class="fas fa-heartbeat text-xl mb-2 text-purple-500"></i>
+                                    <p class="font-medium">ICU</p>
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedUnit" name="unit" required>
+                        </div>
+
+                        <!-- Paket Alkes -->
+                        <div class="mb-6">
+                            <label for="packageSelect" class="block text-gray-700 font-medium mb-2">
+                                <i class="fas fa-boxes mr-2 text-blue-500"></i>Paket Alkes (Opsional)
+                            </label>
+                            <select id="packageSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">-- Pilih Paket --</option>
+                                <option value="infus-dewasa">Paket Infus Dewasa</option>
+                                <option value="infus-anak">Paket Infus Anak</option>
+                                <option value="injeksi-lambung">Paket Injeksi Lambung</option>
+                                <option value="jahit-luka">Paket Hecting</option>
+                            </select>
+                            <p class="text-sm text-gray-500 mt-1">Pilih paket untuk menambahkan item alkes secara otomatis</p>
+                        </div>
+
+                        <!-- Daftar Alkes Dinamis -->
+                        <div class="mb-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <label class="block text-gray-700 font-medium">
+                                    <i class="fas fa-tools mr-2 text-blue-500"></i>Daftar Alkes
+                                </label>
+                                <button type="button" id="addAlkes" class="px-4 py-2 btn-success text-white rounded-lg font-medium">
+                                    <i class="fas fa-plus mr-2"></i>Tambah Alkes
+                                </button>
+                            </div>
+                            
+                            <div id="alkesContainer">
+                                <!-- Baris alkes pertama -->
+                                <div class="dynamic-field mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+                                    <div class="flex flex-col md:flex-row gap-4">
+                                        <div class="md:w-2/3">
+                                            <label class="block text-gray-600 text-sm mb-1">Nama Alkes</label>
+                                            <input type="text" name="alkesName[]" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Abbocath 22" required>
+                                        </div>
+                                        <div class="md:w-1/4">
+                                            <label class="block text-gray-600 text-sm mb-1">Jumlah</label>
+                                            <div class="flex items-center">
+                                                <button type="button" class="decrease-qty p-3 bg-gray-200 text-gray-700 rounded-l-lg hover:bg-gray-300">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <input type="number" name="alkesQty[]" class="w-full p-3 border-t border-b border-gray-300 text-center" min="1" value="1" required>
+                                                <button type="button" class="increase-qty p-3 bg-gray-200 text-gray-700 rounded-r-lg hover:bg-gray-300">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="md:w-1/12 flex items-end">
+                                            <button type="button" class="remove-alkes p-3 btn-danger text-white rounded-lg hover:opacity-90" disabled>
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nama Petugas -->
+                        <div class="mb-8">
+                            <label for="staffName" class="block text-gray-700 font-medium mb-2">
+                                <i class="fas fa-user-injured mr-2 text-blue-500"></i>Nama Petugas
+                            </label>
+                            <input type="text" id="staffName" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan nama petugas" required>
+                        </div>
+
+                        <!-- Tombol Aksi -->
+                        <div class="flex flex-col md:flex-row gap-4 pt-4 border-t border-gray-200">
+                            <button type="submit" class="flex-1 px-6 py-4 btn-primary text-white rounded-lg font-bold text-lg">
+                                <i class="fas fa-save mr-2"></i>Simpan Transaksi
+                            </button>
+                            <button type="button" id="resetForm" class="flex-1 px-6 py-4 btn-secondary text-white rounded-lg font-bold text-lg">
+                                <i class="fas fa-redo mr-2"></i>Reset Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Panel Informasi dan Riwayat -->
+            <div class="lg:w-1/3">
+                <!-- Informasi Transaksi -->
+                <div class="form-container p-6 mb-8">
+                    <div class="header-gradient text-white rounded-t-xl p-4 -mx-6 -mt-6 mb-6">
+                        <h2 class="text-lg font-bold"><i class="fas fa-info-circle mr-2"></i>Informasi Transaksi</h2>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                            <i class="fas fa-calendar-check text-blue-500 text-xl mr-3"></i>
+                            <div>
+                                <p class="text-sm text-gray-600">Tanggal Transaksi</p>
+                                <p id="infoDate" class="font-medium">-</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-user-injured text-green-500 text-xl mr-3"></i>
+                            <div>
+                                <p class="text-sm text-gray-600">Nama Pasien</p>
+                                <p id="infoPatient" class="font-medium">-</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center p-3 bg-purple-50 rounded-lg">
+                            <i class="fas fa-hospital text-purple-500 text-xl mr-3"></i>
+                            <div>
+                                <p class="text-sm text-gray-600">Unit</p>
+                                <p id="infoUnit" class="font-medium">-</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center p-3 bg-amber-50 rounded-lg">
+                            <i class="fas fa-user-nurse text-amber-500 text-xl mr-3"></i>
+                            <div>
+                                <p class="text-sm text-gray-600">Petugas</p>
+                                <p id="infoStaff" class="font-medium">-</p>
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-tools text-gray-500 text-xl mr-3"></i>
+                                <p class="text-sm text-gray-600">Item Alkes Dipinjam</p>
+                            </div>
+                            <ul id="infoAlkes" class="space-y-2 max-h-60 overflow-y-auto">
+                                <li class="text-gray-500 italic">Belum ada data</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Riwayat Transaksi Terakhir -->
+                <div class="form-container p-6">
+                    <div class="header-gradient text-white rounded-t-xl p-4 -mx-6 -mt-6 mb-6">
+                        <h2 class="text-lg font-bold"><i class="fas fa-history mr-2"></i>Riwayat Terakhir</h2>
+                    </div>
+                    
+                    <div id="historyList" class="space-y-4 max-h-80 overflow-y-auto">
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-clipboard-list text-3xl mb-3"></i>
+                            <p>Belum ada transaksi</p>
+                            <p class="text-sm">Transaksi yang disimpan akan muncul di sini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-12 pt-6 border-t border-gray-300 text-center text-gray-600">
+            <p class="mb-2">Aplikasi Buku Utang Piutang Apotik &copy; 2026</p>
+            <p class="text-sm">Created by M Yudhi Akbar</p>
+        </footer>
+    </div>
+
+    <!-- Modal Sukses -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-green-500 text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">Transaksi Berhasil Disimpan!</h3>
+                <p class="text-gray-600 mb-6">Data peminjaman alkes telah tersimpan dalam sistem.</p>
+                <button id="closeModal" class="px-6 py-3 btn-primary text-white rounded-lg font-medium">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Konstanta untuk localStorage
+        const STORAGE_KEY = 'transaction_history';
+
+        // Fungsi untuk menyimpan transaksi ke localStorage
+        function saveToLocalStorage(transaction) {
+            const transactions = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            transactions.push(transaction);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+        }
+
+        // Set tanggal default ke hari ini
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('transactionDate').value = today;
+            updateInfoDate(today);
+            
+            // Set unit default (Rawat Jalan)
+            // selectUnit(document.querySelector('.unit-option[data-unit="Rawat Jalan"]'));
+        });
+
+        // Reset tanggal ke hari ini
+        document.getElementById('resetDate').addEventListener('click', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('transactionDate').value = today;
+            updateInfoDate(today);
+        });
+
+        // Update informasi tanggal di panel
+        document.getElementById('transactionDate').addEventListener('change', function() {
+            updateInfoDate(this.value);
+        });
+
+        function updateInfoDate(dateString) {
+            const date = new Date(dateString);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('infoDate').textContent = date.toLocaleDateString('id-ID', options);
+        }
+
+        // Pilihan unit
+        const unitOptions = document.querySelectorAll('.unit-option');
+        unitOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                selectUnit(this);
+            });
+        });
+
+        function selectUnit(element) {
+            // Hapus kelas selected dari semua opsi
+            unitOptions.forEach(opt => {
+                opt.classList.remove('selected-unit');
+                opt.classList.remove('border-blue-500');
+                opt.classList.add('border-gray-200');
+            });
+            
+            // Tambah kelas selected ke opsi yang dipilih
+            element.classList.remove('border-gray-200');
+            element.classList.add('selected-unit', 'border-blue-500');
+            
+            // Set nilai input tersembunyi
+            const selectedUnit = element.getAttribute('data-unit');
+            document.getElementById('selectedUnit').value = selectedUnit;
+            document.getElementById('infoUnit').textContent = selectedUnit;
+        }
+
+        // Paket alkes
+        // Paket alkes
+        document.getElementById('packageSelect').addEventListener('change', function() {
+            if (this.value) {
+                const packageMap = {
+                    'infus-dewasa': 'infus dewasa',
+                    'infus-anak': 'infus anak',
+                    'injeksi-lambung': 'injeksi lambung',
+                    'jahit-luka': 'jahit luka'
+                };
+                addPackageItems(packageMap[this.value]);
+            }
+        });
+
+        function addPackageItems(packageType) {
+            // Hapus semua item alkes yang ada
+            const container = document.getElementById('alkesContainer');
+            container.innerHTML = '';
+            
+            let items = [];
+            
+            // Tentukan item berdasarkan paket
+            if (packageType === 'infus dewasa') {
+                items = [
+                    { name: 'Abbocath 22', qty: 1 },
+                    { name: 'Abbocath 20', qty: 1 },
+                    { name: 'Macro Set', qty: 1 },
+                    { name: 'NaCl 500 ml', qty: 1 }
+                ];
+            
+            } else if (packageType === 'infus anak') {
+                items = [
+                    { name: 'Abbocath 24', qty: 1 },
+                    { name: 'Abbocath 26', qty: 1 },
+                    { name: 'Macro Set', qty: 1 },
+                    { name: 'Spalk Anak', qty: 1 },
+                    { name: 'Kaen 3B 500 ml', qty: 1 }
+                ];
+            } else if (packageType === 'injeksi lambung') {
+                items = [
+                    { name: 'Abbocath 22', qty: 1 },
+                    { name: 'Macro Set', qty: 1 },
+                    { name: 'Omeprazole 40 mg IV', qty: 1 },
+                    { name: 'Ondansentron 4 mg IV', qty: 1 },
+                    { name: 'Spuit 5 ml', qty: 1 },
+                    { name: 'Spuit 3 ml', qty: 1 }
+                ];
+            } else if (packageType === 'jahit luka') {
+                items = [
+                    { name: 'Lidocain IV', qty: 2 },
+                    { name: 'Spuit 3 ml', qty: 1 },
+                    { name: 'Polypropilen 3/0 TS 27', qty: 1 },
+                    { name: 'Underpad', qty: 1 },
+                    { name: 'Daryantul', qty: 1 },
+                    { name: 'NaCl 500 ml', qty: 1 }
+                ];
+            }
+            
+            // Tambahkan item ke form
+            items.forEach(item => {
+                addAlkesField(item.name, item.qty);
+            });
+            
+            // Update info alkes
+            updateAlkesInfo();
+        }
+
+// Tambah field alkes dinamis
+        document.getElementById('addAlkes').addEventListener('click', function() {
+            addAlkesField();
+        });
+
+        function addAlkesField(name = '', qty = 1) {
+            const container = document.getElementById('alkesContainer');
+            const fieldCount = container.children.length;
+            const fieldId = Date.now() + fieldCount;
+            
+            const fieldHTML = `
+                <div class="dynamic-field mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm" id="alkes-${fieldId}">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="md:w-2/3">
+                            <label class="block text-gray-600 text-sm mb-1">Nama Alkes</label>
+                            <input type="text" name="alkesName[]" class="alkes-name-input w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Abbocath 22" value="${name}" required>
+                        </div>
+                        <div class="md:w-1/4">
+                            <label class="block text-gray-600 text-sm mb-1">Jumlah</label>
+                            <div class="flex items-center">
+                                <button type="button" class="decrease-qty p-3 bg-gray-200 text-gray-700 rounded-l-lg hover:bg-gray-300">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" name="alkesQty[]" class="alkes-qty-input w-full p-3 border-t border-b border-gray-300 text-center" min="1" value="${qty}" required>
+                                <button type="button" class="increase-qty p-3 bg-gray-200 text-gray-700 rounded-r-lg hover:bg-gray-300">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="md:w-1/12 flex items-end">
+                            <button type="button" class="remove-alkes p-3 btn-danger text-white rounded-lg hover:opacity-90">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('afterbegin', fieldHTML);
+            
+            // Tambahkan event listener untuk tombol hapus
+            const newField = document.getElementById(`alkes-${fieldId}`);
+            const removeBtn = newField.querySelector('.remove-alkes');
+            
+            removeBtn.addEventListener('click', function() {
+                newField.remove();
+                updateRemoveButtons();
+                updateAlkesInfo();
+            });
+            
+            // Tambahkan event listener untuk tombol jumlah
+            const decreaseBtn = newField.querySelector('.decrease-qty');
+            const increaseBtn = newField.querySelector('.increase-qty');
+            const qtyInput = newField.querySelector('.alkes-qty-input');
+            
+            decreaseBtn.addEventListener('click', function() {
+                if (qtyInput.value > 1) {
+                    qtyInput.value = parseInt(qtyInput.value) - 1;
+                    updateAlkesInfo();
+                }
+            });
+            
+            increaseBtn.addEventListener('click', function() {
+                qtyInput.value = parseInt(qtyInput.value) + 1;
+                updateAlkesInfo();
+            });
+            
+            // Update ketika input berubah
+            const nameInput = newField.querySelector('.alkes-name-input');
+            nameInput.addEventListener('input', updateAlkesInfo);
+            qtyInput.addEventListener('input', updateAlkesInfo);
+            
+            // Update status tombol hapus
+            updateRemoveButtons();
+            updateAlkesInfo();
+        }
+
+        function updateRemoveButtons() {
+            const fields = document.querySelectorAll('.dynamic-field');
+            const removeButtons = document.querySelectorAll('.remove-alkes');
+            
+            // Jika hanya ada satu field, nonaktifkan tombol hapus
+            if (fields.length === 1) {
+                removeButtons[0].setAttribute('disabled', 'disabled');
+                removeButtons[0].classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                removeButtons.forEach(btn => {
+                    btn.removeAttribute('disabled');
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+            }
+        }
+
+        // Update info alkes di panel
+        function updateAlkesInfo() {
+            const alkesList = document.getElementById('infoAlkes');
+            const nameInputs = document.querySelectorAll('.alkes-name-input');
+            const qtyInputs = document.querySelectorAll('.alkes-qty-input');
+            
+            if (nameInputs.length === 0) {
+                alkesList.innerHTML = '<li class="text-gray-500 italic">Belum ada data</li>';
+                return;
+            }
+            
+            alkesList.innerHTML = '';
+            
+            nameInputs.forEach((input, index) => {
+                const name = input.value.trim();
+                const qty = qtyInputs[index].value;
+                
+                if (name) {
+                    const li = document.createElement('li');
+                    li.className = 'flex justify-between items-center bg-white p-2 rounded border border-gray-100';
+                    li.innerHTML = `
+                        <span class="font-medium">${name}</span>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">${qty}</span>
+                    `;
+                    alkesList.appendChild(li);
+                }
+            });
+            
+            if (alkesList.children.length === 0) {
+                alkesList.innerHTML = '<li class="text-gray-500 italic">Belum ada data</li>';
+            }
+        }
+
+        // Update info pasien di panel
+        document.getElementById('patientName').addEventListener('input', function() {
+            document.getElementById('infoPatient').textContent = this.value || '-';
+        });
+
+        // Update info petugas di panel
+        document.getElementById('staffName').addEventListener('change', function() {
+            document.getElementById('infoStaff').textContent = this.value || '-';
+        });
+
+        // Fungsi reset form tanpa konfirmasi (untuk auto-reset setelah submit)
+        function performFormReset() {
+            document.getElementById('loanForm').reset();
+            
+            // Reset tanggal ke hari ini
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('transactionDate').value = today;
+            updateInfoDate(today);
+            
+            // Reset unit ke Rawat Jalan
+            selectUnit(document.querySelector('.unit-option[data-unit="Rawat Jalan"]'));
+            
+            // Reset alkes container
+            document.getElementById('alkesContainer').innerHTML = '';
+            addAlkesField(); // Tambah satu field kosong
+            
+            // Reset paket dropdown
+            document.getElementById('packageSelect').value = '';
+            
+            // Reset info panel
+            document.getElementById('infoPatient').textContent = '-';
+            document.getElementById('infoStaff').textContent = '-';
+            updateAlkesInfo();
+        }
+
+        // Reset form dengan konfirmasi menggunakan sweetalert2
+        document.getElementById('resetForm').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Reset Form?',
+                text: 'Apakah Anda yakin ingin mereset form? Semua data akan hilang.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: 'Ya, Reset!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    performFormReset();
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Form telah direset.',
+                        icon: 'success',
+                        confirmButtonColor: '#3b82f6'
+                    });
+                }
+            });
+        });
+
+        // Simpan transaksi
+        document.getElementById('loanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validasi form
+            const patientName = document.getElementById('patientName').value;
+            const unit = document.getElementById('selectedUnit').value;
+            const staffName = document.getElementById('staffName').value;
+            
+            if (!patientName || !unit || !staffName) {
+                Swal.fire({
+                    title: 'Data Tidak Lengkap!',
+                    text: 'Harap lengkapi semua data yang diperlukan (Nama Pasien, Unit, Nama Petugas).',
+                    icon: 'warning',
+                    confirmButtonColor: '#3b82f6'
+                });
+                return;
+            }
+            
+            // Ambil data alkes
+            const alkesData = [];
+            const nameInputs = document.querySelectorAll('.alkes-name-input');
+            const qtyInputs = document.querySelectorAll('.alkes-qty-input');
+            
+            nameInputs.forEach((input, index) => {
+                const name = input.value.trim();
+                const qty = qtyInputs[index].value;
+                
+                if (name) {
+                    alkesData.push({ name, qty });
+                }
+            });
+            
+            if (alkesData.length === 0) {
+                Swal.fire({
+                    title: 'Alkes Kosong!',
+                    text: 'Harap tambahkan minimal satu alkes sebelum menyimpan.',
+                    icon: 'warning',
+                    confirmButtonColor: '#3b82f6'
+                });
+                return;
+            }
+            
+            // Simpan ke riwayat
+            saveToHistory(patientName, unit, staffName, alkesData);
+            
+            // Tampilkan sweetalert sukses
+            Swal.fire({
+                title: 'Transaksi Berhasil Disimpan!',
+                text: 'Data peminjaman alkes telah tersimpan dalam sistem.',
+                icon: 'success',
+                confirmButtonColor: '#3b82f6',
+                confirmButtonText: 'OK'
+            });
+        });
+
+        // Simpan ke riwayat transaksi
+        function saveToHistory(patientName, unit, staffName, alkesData) {
+            const historyList = document.getElementById('historyList');
+            const transactionDate = document.getElementById('transactionDate').value;
+            const date = new Date(transactionDate);
+            const formattedDate = date.toLocaleDateString('id-ID', { 
+                day: '2-digit', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+            
+            // Buat elemen riwayat
+            const historyItem = document.createElement('div');
+            historyItem.className = 'p-4 bg-white border border-gray-200 rounded-lg shadow-sm';
+            
+            // Hitung total item
+            const totalItems = alkesData.reduce((total, item) => total + parseInt(item.qty), 0);
+            
+            historyItem.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <h4 class="font-bold text-gray-800">${patientName}</h4>
+                        <p class="text-sm text-gray-600">${unit} • ${formattedDate}</p>
+                    </div>
+                    <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-bold">${totalItems} item</span>
+                </div>
+                <div class="mb-2">
+                    <p class="text-sm text-gray-600"><i class="fas fa-user-nurse mr-1"></i> ${staffName}</p>
+                </div>
+                <div class="text-sm text-gray-700">
+                    <p class="font-medium mb-1">Alkes:</p>
+                    <ul class="list-disc pl-5">
+                        ${alkesData.slice(0, 3).map(item => `<li>${item.name} (${item.qty})</li>`).join('')}
+                        ${alkesData.length > 3 ? `<li>dan ${alkesData.length - 3} item lainnya...</li>` : ''}
+                    </ul>
+                </div>
+            `;
+            
+            // Tambahkan ke awal riwayat
+            if (historyList.children.length > 0 && historyList.children[0].classList.contains('text-center')) {
+                historyList.innerHTML = '';
+            }
+            
+            historyList.prepend(historyItem);
+            
+            // Simpan transaksi ke localStorage
+            saveToLocalStorage({
+                date: transactionDate,
+                patientName: patientName,
+                unit: unit,
+                staffName: staffName,
+                alkesData: alkesData
+            });
+            
+            // Reset form setelah disimpan (tanpa konfirmasi)
+            performFormReset();
+        }
+
+        // Inisialisasi satu field alkes kosong saat pertama kali load
+        addAlkesField();
+    </script>
+</body>
+</html>
