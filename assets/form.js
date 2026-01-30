@@ -394,7 +394,7 @@ function loadHistory() {
 
         res.data.forEach(trx => {
             const div = document.createElement("div");
-            div.className = "p-3 bg-white rounded border";
+            div.className = "pl-10 p-3 bg-white rounded border";
             const tanggalFormatted = formatTanggalIndonesia(trx.tanggal);
             let alkesHTML = '<ul class="list-disc ml-5 text-sm mt-2">';
                 if (trx.alkes && trx.alkes.length) {
@@ -415,8 +415,8 @@ function loadHistory() {
                         ${alkesHTML}
                     </div>
                     <div class="mt-2">
-                        <button onclick="editData('${trx.id}')" class="text-blue-600">Edit</button>
-                        <button onclick="deleteData('${trx.id}')" class="text-red-600 ml-2">Hapus</button>
+                        <button onclick="editData('${trx.id}')" class="text-blue-600 d-none">Edit</button>
+                        <button onclick="deleteData('${trx.id}')" class="text-red-600 ml-2 d-none">Hapus</button>
                     </div>
                 `;
 

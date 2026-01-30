@@ -12,16 +12,33 @@
 </head>
 
 <body class="text-gray-800">
+    <!-- Navbar Responsive -->
+    <nav class="bg-sky-900 text-white px-4 py-3 flex items-center justify-between flex-wrap mb-8">
+        <div class="flex items-center flex-shrink-0 mr-6">
+            <span class="font-bold text-xl tracking-tight">BUKU UTANG FARMASI</span>
+        </div>
+        <div class="block lg:hidden">
+            <button id="nav-toggle" class="flex items-center px-3 py-2 border rounded text-white border-white hover:text-sky-300 hover:border-sky-300">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="nav-menu" class="w-full block flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block">
+            <div class="text-sm lg:flex-grow">
+                <a href="index.html" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-sky-300 mr-6">Dashboard</a>
+                <a href="#" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-sky-300 mr-6">Form</a>
+                <a href="riwayat-utang.html" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-sky-300">Riwayat Utang</a>
+            </div>
+        </div>
+    </nav>
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="mb-10 text-center">
-            <h1 class="text-3xl font-bold mb-3 text-sky-900">Aplikasi Buku Utang Farmasi RSUD Kebayoran Lama</h1>
-            <p class="text-lg text-gray-600">Catat dan kelola transaksi peminjaman alkes dengan mudah dan efisien</p>
+            <h1 class="text-3xl font-bold mb-3 text-sky-900">Riwayat Terakhir Utang Alkes</h1>
         </header>
 
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Form Input -->
-            <div class="lg:w-2/3">
+            <div class="lg:w-2/3 d-none">
                 <div class="form-container p-6 mb-8">
                     <div class="header-gradient text-white rounded-t-xl p-4 -mx-6 -mt-6 mb-6">
                         <h2 class="text-lg font-bold"><i class="fas fa-file-medical mr-2"></i>Form Peminjaman Alkes</h2>
@@ -30,7 +47,6 @@
                     <form id="loanForm">
                         <!-- Tanggal Transaksi -->
                         <div class="mb-6">
-                            <p id="nowDateTime" class="text-lg text-blue-700 mt-3 mb-3 font-semibold"></p>
                             <label for="transactionDate" class="block text-gray-700 font-medium mb-2">
                                 <i class="fas fa-calendar-day mr-2 text-blue-500"></i>Tanggal Transaksi
                             </label>
@@ -40,6 +56,7 @@
                                     <i class="fas fa-sync-alt"></i>
                                 </button>
                             </div>
+                            <p class="text-sm text-gray-500 mt-1">Tanggal transaksi default adalah hari ini</p>
                         </div>
 
                         <!-- Nama Pasien -->
@@ -146,7 +163,7 @@
                 </div>
 
                 <!-- Informasi Transaksi -->
-                <div class="form-container p-6 mb-8">
+                <div class="form-container p-6 mb-8 d-none">
                     <div class="header-gradient text-white rounded-t-xl p-4 -mx-6 -mt-6 mb-6">
                         <h2 class="text-lg font-bold"><i class="fas fa-info-circle mr-2"></i>Informasi Transaksi</h2>
                     </div>
@@ -200,7 +217,7 @@
 
         <!-- Footer -->
         <footer class="mt-12 pt-6 border-t border-gray-300 text-center text-gray-600">
-            <p class="mb-2">Aplikasi Buku Utang Farmasi &copy; <span id="year"></span></p>
+            <p class="mb-2">Aplikasi Buku Utang Piutang Farmasi &copy; <span id="year"></span></p>
             <p class="text-sm">Created by M Yudhi Akbar</p>
         </footer>
     </div>
@@ -220,6 +237,6 @@
     </div>
 
 <script src="assets/main.js"></script>
-<script src="assets/form.js"></script>
+<script src="assets/read.js"></script>
 </body>
 </html>
