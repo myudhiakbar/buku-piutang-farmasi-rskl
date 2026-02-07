@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplikasi Buku Utang Farmasi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 
 <body class="text-gray-800">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <header class="mb-10 text-center">
-            <h1 class="text-3xl font-bold mb-3 text-sky-900">Aplikasi Buku Utang Farmasi RSUD Kebayoran Lama</h1>
-            <p class="text-lg text-gray-600">Catat dan kelola transaksi peminjaman alkes dengan mudah dan efisien</p>
-        </header>
+    <header class="bg-gradient-to-r from-blue-800 to-blue-500 text-white p-4 shadow-md">
+        <div class="flex items-center gap-3">
+            <div class="text-2xl">🏥</div>
+            <div>
+                <h1 class="text-lg font-semibold">Aplikasi Buku Utang Farmasi RSUD KL</h1>
+                <p id="nowDateTime" class="text-sm opacity-90"></p>
+            </div>
+        </div>
+    </header>
 
+    <nav class="bg-white shadow-sm px-4">
+        <div class="flex gap-6 text-blue-600 font-medium py-3">
+            <a href="/" class="nav-link pb-1 border-b-2 border-blue-600">Form Peminjaman</a>
+            <a href="/riwayat-utang.html" class="nav-link hover:text-blue-800">Riwayat Peminjaman</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Form Input -->
             <div class="lg:w-2/3">
@@ -30,13 +43,15 @@
                     <form id="loanForm">
                         <!-- Tanggal Transaksi -->
                         <div class="mb-6">
-                            <p id="nowDateTime" class="text-lg text-blue-700 mt-3 mb-3 font-semibold"></p>
                             <label for="transactionDate" class="block text-gray-700 font-medium mb-2">
                                 <i class="fas fa-calendar-day mr-2 text-blue-500"></i>Tanggal Transaksi
                             </label>
                             <div class="flex items-center">
-                                <input type="date" id="transactionDate" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                <button type="button" id="resetDate" class="ml-3 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
+                                <input type="date" id="transactionDate"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required>
+                                <button type="button" id="resetDate"
+                                    class="ml-3 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
                                     <i class="fas fa-sync-alt"></i>
                                 </button>
                             </div>
@@ -47,11 +62,23 @@
                             <label for="patientName" class="block text-gray-700 font-medium mb-2">
                                 <i class="fas fa-user-injured mr-2 text-blue-500"></i>Nama Pasien
                             </label>
-                            <input type="text" id="patientName" name="patientName" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan nama pasien" required>
+                            <input type="text" id="patientName" name="patientName"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Masukkan nama pasien" required>
                         </div>
 
-                        <!-- Unit -->
-                        <div class="mb-6">
+                        <!-- Nama Petugas -->
+                        <div class="mb-8">
+                            <label for="staffName" class="block text-gray-700 font-medium mb-2">
+                                <i class="fas fa-user-injured mr-2 text-blue-500"></i>Nama Petugas
+                            </label>
+                            <input type="text" id="staffName" name="staffName"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Masukkan nama petugas" required>
+                        </div>
+
+                        <!-- Unit Block -->
+                        <!-- <div class="mb-6">
                             <label class="block text-gray-700 font-medium mb-3">
                                 <i class="fas fa-hospital mr-2 text-blue-500"></i>Unit
                             </label>
@@ -74,6 +101,26 @@
                                 </div>
                             </div>
                             <input type="hidden" id="selectedUnit" name="unit" required>
+                        </div> -->
+
+                        <!-- Unit -->
+                        <div class="mb-6">
+                            <label for="selectedUnit" class="block text-gray-700 font-medium mb-3">
+                                <i class="fas fa-hospital mr-2 text-blue-500"></i>Unit
+                            </label>
+                            <div class="custom-select">
+                                <select id="selectedUnit" name="unit"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">-- Pilih Unit --</option>
+                                    <option value="IGD">IGD</option>
+                                    <option value="Rawat Jalan">Rawat Jalan</option>
+                                    <option value="Rawat Inap">Rawat Inap</option>
+                                    <option value="ICU">ICU</option>
+                                    <option value="Perina/PICU/NICU">Perina/PICU/NICU</option>
+                                    <option value="VK">VK</option>
+                                    <option value="OK">OK</option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- Paket Alkes -->
@@ -81,14 +128,16 @@
                             <label for="packageSelect" class="block text-gray-700 font-medium mb-2">
                                 <i class="fas fa-boxes mr-2 text-blue-500"></i>Paket Alkes (Opsional)
                             </label>
-                            <select id="packageSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <select id="packageSelect"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="">-- Pilih Paket --</option>
                                 <option value="infus-dewasa">Paket Infus Dewasa</option>
                                 <option value="infus-anak">Paket Infus Anak</option>
                                 <option value="injeksi-lambung">Paket Injeksi Lambung</option>
                                 <option value="jahit-luka">Paket Hecting</option>
                             </select>
-                            <p class="text-sm text-gray-500 mt-1">Pilih paket untuk menambahkan item alkes secara otomatis</p>
+                            <p class="text-sm text-gray-500 mt-1">Pilih paket untuk menambahkan item alkes secara
+                                otomatis</p>
                         </div>
 
                         <!-- Daftar Alkes Dinamis -->
@@ -97,30 +146,25 @@
                                 <label class="block text-gray-700 font-medium">
                                     <i class="fas fa-tools mr-2 text-blue-500"></i>Daftar Alkes
                                 </label>
-                                <button type="button" id="addAlkes" class="px-4 py-2 btn-success text-white rounded-lg font-medium">
+                                <button type="button" id="addAlkes"
+                                    class="px-4 py-2 btn-success text-white rounded-lg font-medium">
                                     <i class="fas fa-plus mr-2"></i>Tambah Alkes
                                 </button>
                             </div>
-                            
+
                             <div id="alkesContainer">
                                 <!-- Baris alkes akan dibuat secara dinamis oleh JavaScript -->
                             </div>
                         </div>
 
-                        <!-- Nama Petugas -->
-                        <div class="mb-8">
-                            <label for="staffName" class="block text-gray-700 font-medium mb-2">
-                                <i class="fas fa-user-injured mr-2 text-blue-500"></i>Nama Petugas
-                            </label>
-                            <input type="text" id="staffName" name="staffName" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan nama petugas" required>
-                        </div>
-
                         <!-- Tombol Aksi -->
                         <div class="flex flex-col md:flex-row gap-4 pt-4 border-t border-gray-200">
-                            <button type="submit" class="flex-1 px-6 py-4 btn-primary text-white rounded-lg font-bold text-lg">
+                            <button type="submit"
+                                class="flex-1 px-6 py-4 btn-primary text-white rounded-lg font-bold text-lg">
                                 <i class="fas fa-save mr-2"></i>Simpan Transaksi
                             </button>
-                            <button type="button" id="resetForm" class="flex-1 px-6 py-4 btn-secondary text-white rounded-lg font-bold text-lg">
+                            <button type="button" id="resetForm"
+                                class="flex-1 px-6 py-4 btn-secondary text-white rounded-lg font-bold text-lg">
                                 <i class="fas fa-redo mr-2"></i>Reset Form
                             </button>
                         </div>
@@ -129,13 +173,13 @@
             </div>
 
             <!-- Panel Informasi dan Riwayat -->
-            <div class="lg:w-1/3">
+            <div class="lg:w-1/3 d-none">
                 <!-- Riwayat Transaksi Terakhir -->
                 <div class="form-container p-6 mb-8">
                     <div class="header-gradient text-white rounded-t-xl p-4 -mx-6 -mt-6 mb-6">
                         <h2 class="text-lg font-bold"><i class="fas fa-history mr-2"></i>Riwayat Terakhir</h2>
                     </div>
-                    
+
                     <div id="historyList" class="space-y-4 max-h-[600px] overflow-y-auto">
                         <div class="text-center py-8 text-gray-500">
                             <i class="fas fa-clipboard-list text-3xl mb-3"></i>
@@ -150,7 +194,7 @@
                     <div class="header-gradient text-white rounded-t-xl p-4 -mx-6 -mt-6 mb-6">
                         <h2 class="text-lg font-bold"><i class="fas fa-info-circle mr-2"></i>Informasi Transaksi</h2>
                     </div>
-                    
+
                     <div class="space-y-4">
                         <div class="flex items-center p-3 bg-blue-50 rounded-lg">
                             <i class="fas fa-calendar-check text-blue-500 text-xl mr-3"></i>
@@ -159,7 +203,7 @@
                                 <p id="infoDate" class="font-medium">-</p>
                             </div>
                         </div>
-                        
+
                         <div class="flex items-center p-3 bg-green-50 rounded-lg">
                             <i class="fas fa-user-injured text-green-500 text-xl mr-3"></i>
                             <div>
@@ -167,7 +211,7 @@
                                 <p id="infoPatient" class="font-medium">-</p>
                             </div>
                         </div>
-                        
+
                         <div class="flex items-center p-3 bg-purple-50 rounded-lg">
                             <i class="fas fa-hospital text-purple-500 text-xl mr-3"></i>
                             <div>
@@ -175,15 +219,7 @@
                                 <p id="infoUnit" class="font-medium">-</p>
                             </div>
                         </div>
-                        
-                        <div class="flex items-center p-3 bg-amber-50 rounded-lg">
-                            <i class="fas fa-user-nurse text-amber-500 text-xl mr-3"></i>
-                            <div>
-                                <p class="text-sm text-gray-600">Petugas</p>
-                                <p id="infoStaff" class="font-medium">-</p>
-                            </div>
-                        </div>
-                        
+
                         <div class="p-3 bg-gray-50 rounded-lg">
                             <div class="flex items-center mb-2">
                                 <i class="fas fa-tools text-gray-500 text-xl mr-3"></i>
@@ -205,21 +241,7 @@
         </footer>
     </div>
 
-    <!-- Modal Sukses -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-2xl p-8 max-w-md mx-4">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-check text-green-500 text-2xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Transaksi Berhasil Disimpan!</h3>
-                <p class="text-gray-600 mb-6">Data peminjaman alkes telah tersimpan dalam sistem.</p>
-                <button id="closeModal" class="px-6 py-3 btn-primary text-white rounded-lg font-medium">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-<script src="assets/main.js"></script>
-<script src="assets/form.js"></script>
+    <script src="assets/main.js"></script>
 </body>
+
 </html>
